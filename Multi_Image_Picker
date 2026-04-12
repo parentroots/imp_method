@@ -1,0 +1,85 @@
+
+//Picker object create==============================================
+  final ImagePicker picker = ImagePicker();
+
+//Iimage List=======================================================
+  List<File> images = [];
+
+
+
+//Picked Method====================================================
+  Future<void> pickImages() async {
+
+//Temp Iimage List==================================================
+    final List<XFile> pickedFiles = await picker.pickMultiImage();
+
+    if (pickedFiles.isNotEmpty) {
+      setState(() {
+        images.addAll(pickedFiles.map((e) => File(e.path)).toList());
+      });
+    }
+  }
+
+
+//Remove Imageg Method===============================================
+
+  void removeImage(int index) {
+    setState(() {
+      images.removeAt(index);
+    });
+  }
+
+
+
+
+          
+//ListView/GridView===================================================          
+          
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: images.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5,
+              ),
+              itemBuilder: (context, index) {
+                return Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.file(
+                        images[index],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+
+                    Positioned(
+                      right: 4,
+                      top: 4,
+                      child: GestureDetector(
+                        onTap: () => removeImage(index),
+                        child: const CircleAvatar(
+                          radius: 12,
+                          backgroundColor: Colors.black54,
+                          child: Icon(Icons.close, size: 14, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+
+
+
+//Button====================================================
+
+          ElevatedButton(
+            onPressed: pickImages,
+            child: const Text("Pick Images"),
+          ),
+
+
+
