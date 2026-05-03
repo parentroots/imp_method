@@ -15,7 +15,9 @@
 
     if (pickedFiles.isNotEmpty) {
       setState(() {
+
         images.addAll(pickedFiles.map((e) => File(e.path)).toList());
+
       });
     }
   }
